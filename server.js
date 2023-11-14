@@ -29,7 +29,7 @@ app.get("/posts/create", postsController.create);
 app.get("/posts/:slug/download", postsController.downloadImage);
 
 // Definisco la rotta dei posts con use
-// app.use("/posts", postsRouter);
+app.use("/posts", postsRouter);
 
 // Avvio il server
 app.listen(port, () => {
