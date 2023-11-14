@@ -77,6 +77,7 @@ const store = (req, res) => {
   posts.push({
     ...req.body,
     slug: kebabCase(req.body.title),
+    image: req.file,
 
     // Controllo su postman con metodo GET localhost:3000/posts nell'URL
   });
@@ -89,21 +90,6 @@ const store = (req, res) => {
 
   res.json(posts[posts.length - 1]);
 };
-
-// Funzione per rotta DESTROY
-// const destroy = (req, res) => {
-//   const post = findOrFail(req, res);
-
-//   const newPostsList = require("../db/posts.json");
-//   const postIndex = newPostsList.findIndex((_post) => _post.slug == post.slug);
-//   newPostsList.splice(postIndex, 1);
-
-//   const json = JSON.stringify(newPostsList, null, 2);
-
-//   fs.writeFileSync(path.resolve(__dirname, "..", "posts.json"), json);
-
-//   res.send("Post eliminato");
-// };
 
 const destroy = (req, res) => {
   const postSlug = req.params.slug;

@@ -47,5 +47,23 @@
   {
     "title": "nuovo post 2",
     "slug": "nuovo-post-2"
+  },
+  {
+    "title": "nuovo post 3",
+    "slug": "nuovo-post-3"
+  },
+  {
+    "title": "nuovo post 3",
+    "slug": "nuovo-post-3",
+    "image": {
+      "fieldname": "image",
+      "originalname": "download.png",
+      "encoding": "7bit",
+      "mimetype": "image/png",
+      "destination": "public/imgs/posts",
+      "filename": "315e76c62d2e4a9947c8961c547216a3",
+      "path": "public/imgs/posts/315e76c62d2e4a9947c8961c547216a3",
+      "size": 3713
+    }
   }
 ]
