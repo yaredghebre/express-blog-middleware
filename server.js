@@ -17,18 +17,19 @@ const app = express();
 // Configuro asset statico
 app.use(express.static("public"));
 
+// COnfiguro per leggere i dati in formato JSON
+app.use(express.json());
+
+// Configuro express per leggere i dati in x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 // Rotta della home
 app.get("/", homeController.postIndex);
 
-// Definisco la rotta dei posts con get
+// Definisco la rotta dei posts con get (Pagina Iniziale)
 app.get("/posts", postsController.index);
 
-// Definisco la rotta del create
-app.get("/posts/create", postsController.create);
-
-app.get("/posts/:slug/download", postsController.downloadImage);
-
-// Definisco la rotta dei posts con use
+// Definisco la rotta dei posts con use (Per gestire tutte le routes)
 app.use("/posts", postsRouter);
 
 // Avvio il server

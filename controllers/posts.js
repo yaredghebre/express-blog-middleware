@@ -1,5 +1,7 @@
 const posts = require("../db/db.js");
 const path = require("path");
+const fs = require("fs");
+const { kebabCase } = require("lodash");
 
 // Funzione per rotta INDEX
 const index = (req, res) => {
@@ -63,6 +65,30 @@ const create = (req, res) => {
   });
 };
 
+// Funzione per lo STORE
+const store = (req, res) => {
+  // Lettura DB
+  const posts = require("../db/posts.json");
+
+  // Recupero degli slug dei posts
+  let slugList = posts.map((post) => post.slug);
+
+  // Aggiungo i post al DB
+  posts.push({
+    ...req.body,
+    // title: req.body.name,
+    // slug: slugList[slugList.length - 1],
+  });
+
+  // Converto into JSON
+  const json = JSON.stringify(posts);
+
+  // Scrivo il DB in JSON
+  fs.writeFileSync(path.resolve(__dirname, "..", "db", "posts.json"), json);
+
+  res.json(posts[posts.length - 1]);
+};
+
 // Funzione per download Immagine
 const downloadImage = (req, res) => {
   const post = findOrFail(req, res);
@@ -90,4 +116,4 @@ const findOrFail = (req, res) => {
   return post;
 };
 
-module.exports = { index, show, create, downloadImage };
+module.exports = { index, show, create, downloadImage, store };
