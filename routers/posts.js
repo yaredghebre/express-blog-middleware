@@ -18,4 +18,8 @@ router.post(
   multer({ dest: "public/imgs/posts" }).single("image"),
   postsController.store
 );
+
+// Creo Rotta per il DESTROY
+router.delete("/:slug", postsController.destroy);
+
 module.exports = router;

@@ -65,7 +65,7 @@ const create = (req, res) => {
   });
 };
 
-// Funzione per lo STORE
+// Funzione per rotta STORE
 const store = (req, res) => {
   // Lettura DB
   const posts = require("../db/posts.json");
@@ -76,17 +76,27 @@ const store = (req, res) => {
   // Aggiungo i post al DB
   posts.push({
     ...req.body,
-    // title: req.body.name,
-    // slug: slugList[slugList.length - 1],
+    slug: kebabCase(req.body.title),
+
+    // Controllo su postman con metodo GET localhost:3000/posts nell'URL
   });
 
   // Converto into JSON
-  const json = JSON.stringify(posts);
+  const json = JSON.stringify(posts, null, 2);
 
   // Scrivo il DB in JSON
   fs.writeFileSync(path.resolve(__dirname, "..", "db", "posts.json"), json);
 
   res.json(posts[posts.length - 1]);
+};
+
+// Funzione per rotta DESTROY
+const destroy = (req, res) => {
+  const post = findOrFail(req, res);
+
+  const newPostsList = require("../db/posts.json");
+  const postIndex = newPostsList.findIndex((_post) => _post.slug == post.slug);
+  newPostsList.splice(postIndex, 1);
 };
 
 // Funzione per download Immagine
@@ -116,4 +126,4 @@ const findOrFail = (req, res) => {
   return post;
 };
 
-module.exports = { index, show, create, downloadImage, store };
+module.exports = { index, show, create, downloadImage, store, destroy };
