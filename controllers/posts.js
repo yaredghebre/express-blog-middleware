@@ -91,12 +91,55 @@ const store = (req, res) => {
 };
 
 // Funzione per rotta DESTROY
-const destroy = (req, res) => {
-  const post = findOrFail(req, res);
+// const destroy = (req, res) => {
+//   const post = findOrFail(req, res);
 
+//   const newPostsList = require("../db/posts.json");
+//   const postIndex = newPostsList.findIndex((_post) => _post.slug == post.slug);
+//   newPostsList.splice(postIndex, 1);
+
+//   const json = JSON.stringify(newPostsList, null, 2);
+
+//   fs.writeFileSync(path.resolve(__dirname, "..", "posts.json"), json);
+
+//   res.send("Post eliminato");
+// };
+
+const destroy = (req, res) => {
+  const postSlug = req.params.slug;
   const newPostsList = require("../db/posts.json");
-  const postIndex = newPostsList.findIndex((_post) => _post.slug == post.slug);
-  newPostsList.splice(postIndex, 1);
+  const postIndex = newPostsList.findIndex((post) => post.slug === postSlug);
+
+  if (postIndex === -1) {
+    res.status(404).send("Post non trovato :(");
+    res.format({
+      html: () => {
+        res.redirect("/posts"); // Reindirizza l'utente a un'altra pagina
+      },
+      default: () => {
+        res.send("Post eliminato");
+      },
+    });
+    return;
+  }
+
+  // Elimino il post dall'array
+  posts.splice(postIndex, 1);
+
+  // Aggiorno il file JSON
+  const json = JSON.stringify(posts, null, 2);
+  fs.writeFileSync(path.resolve(__dirname, "..", "db", "posts.json"), json);
+
+  // Invio risposta per post eliminato
+  res.format({
+    // Commento HTML per vedere risposta su Postman!
+    // html: () => {
+    //   res.redirect("/posts");
+    // },
+    default: () => {
+      res.send("Post eliminato");
+    },
+  });
 };
 
 // Funzione per download Immagine
